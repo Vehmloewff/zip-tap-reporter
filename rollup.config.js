@@ -4,7 +4,7 @@ import pkg from './package.json';
 import command from 'rollup-plugin-command';
 import typescript from 'rollup-plugin-typescript';
 
-const name = 'todo';
+const name = 'zipTapReporter';
 const sourcemap = true;
 const prod = process.env.NODE_ENV === 'production';
 const watching = process.env.ROLLUP_WATCH;
