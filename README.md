@@ -2,9 +2,7 @@
 
 A small and colorfull reporter for [zip-tap](https://github.com/Vehmloewff/zip-tap)
 
-![CLI Output](https://github.com/Vehmloewff/zip-tap-reporter/raw/master/screenshot2.png)
-
-![CLI Output](https://github.com/Vehmloewff/zip-tap-reporter/raw/master/screenshot2.png)
+![CLI Output](https://github.com/Vehmloewff/zip-tap-reporter/raw/master/screenshot.png)
 
 ## Usage
 
