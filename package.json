@@ -1,7 +1,7 @@
 {
-	"name": "todo",
+	"name": "zip-tap-reporter",
 	"version": "0.0.0",
-	"description": "TODO: Add description",
+	"description": "A small and colorfull reporter for zip-tap",
 	"main": "dist/build.cjs.js",
 	"module": "dist/build.esm.js",
 	"typings": "typings/index.d.ts",

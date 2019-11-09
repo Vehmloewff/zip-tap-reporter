@@ -38,7 +38,7 @@ tests(async () => {
 		});
 
 		it(`should fail because I want to see if the fail output`, expect => {
-			expect(1).toBe(2);
+			// expect(1).toBe(2);
 		});
 		it(`should be a valid type`, expect => {
 			expect(1).toBe(1);
@@ -62,7 +62,7 @@ tests(async () => {
 		});
 
 		it(`should fail because I want to see if the fail output`, expect => {
-			expect(() => {}).toThrow();
+			// expect(() => {}).toThrow();
 		});
 		it(`should not throw and error when valied params are passed`, expect => {
 			expect(1).toBe(1);

@@ -1,35 +1,32 @@
-# nodejs-template
+# zip-tap-reporter
 
-## Startup
+A small and colorfull reporter for [zip-tap](https://github.com/Vehmloewff/zip-tap)
 
-```sh
-npx degit Vehmloewff/nodejs-template#typescript nodejs-app
-# or the javascript branch
-cd nodejs-app
-npm i
-```
+![CLI Output](https://github.com/Vehmloewff/zip-tap-reporter/tree/master/screenshot2.png)
 
-## Running the tests
+![CLI Output](https://github.com/Vehmloewff/zip-tap-reporter/tree/master/screenshot2.png)
 
-To run `test.js`:
+## Usage
 
 ```sh
-npm test
-# or
-npm test -- -w
+npm i -D zip-tap-reporter
 ```
 
-## Linting
-
-This template uses a combination of `prettier` and `eslint`.
+### CLI
 
 ```sh
-npm run lint
-# or
-npm run lint:test
+node tests.js | zip-tap-reporter
 ```
 
-If you need `eslint` or `prettier` to ignore a file, just add it to the `.eslintignore` or `.prettierignore`.
+### API
+
+```js
+const createReporter = require('../dist/build.cjs');
+
+const reporter = createReporter();
+
+process.stdin.on('data', reporter);
+```
 
 ## License
 
