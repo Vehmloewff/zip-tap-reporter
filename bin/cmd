@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+const createReporter = require('../dist/build.cjs');
+
+const reporter = createReporter();
+
+process.stdin.on('data', reporter);
