@@ -4,3 +4,5 @@ node_modules
 .prettierignore
 LICENSE
 dist
+typings
+screenshot.png
