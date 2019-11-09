@@ -37,8 +37,8 @@ function writeBlocks(blocks: Blocks[]) {
 					toLog += `        ${test.actual}\n`;
 				}
 				if (test.actual || test.expected) toLog += `\n\n`;
-				if (test.at) toLog += `      at ${chalk.grey(test.at)}\n`;
-				toLog += `\n    -----------------------------------------------------------------`;
+				if (test.at) toLog += `      ${chalk.grey(`at ${test.at}`)}\n`;
+				toLog += `\n    ${chalk.grey`-----------------------------------------------------------------`}`;
 				toLog += `\n\n`;
 			}
 		});
@@ -50,13 +50,36 @@ function writeBlocks(blocks: Blocks[]) {
 }
 
 function summarize(summary: string[]) {
+	const passedMatcher = /^# success: (\d+)$/;
+	const failedMatcher = /^# failure: (\d+)$/;
+	const planMatcher = /^\d+\.\.\.(\d+)$/;
+	let didFail = false;
+	let totalTests: string = null;
+
 	summary.forEach(line => {
-		if (/^\d+\.\.\.\d+$/.test(line)) return;
-		if (/^# not ok$/.test(line))
-			console.log(chalk.red.bold`Test Failed`, chalk.red`See above for details.`, `\n`);
-		if (/^# ok$/.test(line)) console.log(chalk.green.bold`Test Passed`, `\n`);
-		// if (/^# passed: \d+$/) console.log(chalk.``);
+		if (planMatcher.test(line)) totalTests = line.replace(planMatcher, '$1');
+		else if (/^# not ok$/.test(line)) {
+			console.log(chalk.red.bold`Failed`, chalk.red`See above for details.`, `\n`);
+			didFail = true;
+		} else if (/^# ok$/.test(line)) console.log(chalk.green.bold`Passed`, `\n`);
+		else if (passedMatcher.test(line) && !didFail)
+			console.log(
+				chalk.green.bold(line.replace(passedMatcher, '$1')),
+				chalk.green`tests passed`
+			);
+		else if (failedMatcher.test(line) && didFail)
+			console.log(
+				chalk.red.bold(line.replace(failedMatcher, '$1')),
+				chalk.red(`out of ${totalTests} tests failed`)
+			);
 	});
+
+	if (didFail) {
+		console.log();
+		console.log(chalk.bgRed.white` RUN FAILURE `, chalk.red`Not ALL of the above tests passed`);
+	}
+
+	console.log();
 }
 
 function startTest() {
