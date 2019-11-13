@@ -73,12 +73,12 @@ function summarize(summary: string[]) {
 		else if (passedMatcher.test(line) && !didFail)
 			console.log(
 				chalk.green.bold(line.replace(passedMatcher, '$1')),
-				chalk.green`tests passed`
+				chalk.green(`test${totalTests === '1' ? '' : 's'} passed`)
 			);
 		else if (failedMatcher.test(line) && didFail)
 			console.log(
 				chalk.red.bold(line.replace(failedMatcher, '$1')),
-				chalk.red(`out of ${totalTests} tests failed`)
+				chalk.red(`out of ${totalTests} test${totalTests === '1' ? '' : 's'} failed`)
 			);
 	});
 
