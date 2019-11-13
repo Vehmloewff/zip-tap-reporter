@@ -12,6 +12,14 @@ function removeRunningMessage() {
 	cursorTo(process.stdout, 0);
 }
 
+function showJSONIfGiven(toTest: string | object): string {
+	try {
+		if (typeof toTest === 'object' && toTest)
+			return JSON.stringify(toTest, null, 2).replace(/\n/g, `\n        `);
+	} catch (_) {}
+	return String(toTest);
+}
+
 function writeBlocks(blocks: Blocks[]) {
 	blocks.forEach(block => {
 		let toLog = ``;
@@ -26,9 +34,9 @@ function writeBlocks(blocks: Blocks[]) {
 				toLog += `      ${chalk.red(test.message)}\n\n`;
 				if (test.expected && test.actual) {
 					toLog += `      ${chalk.grey(`Expected value:`)}\n`;
-					toLog += `        ${test.expected}\n`;
+					toLog += `        ${showJSONIfGiven(test.expected)}\n`;
 					toLog += `      ${chalk.grey(`Actual value:`)}\n`;
-					toLog += `        ${test.actual}`;
+					toLog += `        ${showJSONIfGiven(test.actual)}`;
 				} else if (test.expected) {
 					toLog += `      ${chalk.grey(`Value expected:`)}\n`;
 					toLog += `        ${test.expected}\n`;
