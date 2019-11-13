@@ -9,7 +9,7 @@ tests(async () => {
 
 		await delay(200);
 
-		it(`should not throw and error when valied params are passed`, expect => {
+		it(`should not throw and error when valid params are passed`, expect => {
 			expect(1).toBe(1);
 		});
 
@@ -70,6 +70,12 @@ tests(async () => {
 
 		it(`short message`, expect => {
 			expect(1).toBe(1);
+		});
+		it(`should return JSON if failing`, expect => {
+			expect([{ this: 'that' }, { then: 'there' }]).toMatchObject([
+				{ this: 'that' },
+				{ then: 'there' },
+			]);
 		});
 	});
 });
