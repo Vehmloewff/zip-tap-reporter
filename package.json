@@ -37,14 +37,14 @@
 		"cross-env": "^6.0.3",
 		"delay": "^4.3.0",
 		"prettier": "^1.19.1",
-		"rollup": "^1.26.3",
+		"rollup": "^1.27.0",
 		"rollup-plugin-command": "^1.0.7",
 		"rollup-plugin-commonjs": "^10.1.0",
 		"rollup-plugin-node-resolve": "^5.2.0",
 		"rollup-plugin-typescript": "^1.0.1",
 		"tslib": "^1.10.0",
 		"typescript": "^3.7.2",
-		"zip-tap": "^1.0.3"
+		"zip-tap": "^1.0.4"
 	},
 	"homepage": "https://github.com/Vehmloewff/zip-tap-reporter",
 	"repository": {
@@ -53,7 +53,7 @@
 	},
 	"dependencies": {
 		"@types/through2": "^2.0.34",
-		"chalk": "^2.4.2",
+		"chalk": "^3.0.0",
 		"debug": "^4.1.1",
 		"through2": "^3.0.1"
 	}

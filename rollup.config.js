@@ -21,7 +21,7 @@ if (prod) output.push({ file: pkg.module, format: 'es', ...sharedOutputOptions }
 export default {
 	input: prod ? 'src/index.ts' : 'test.ts',
 	output,
-	external: [`stream`, `readline`, `os`],
+	external: [`stream`, `readline`, `os`, `tty`],
 	plugins: [
 		resolve({
 			preferBuiltins: true,
