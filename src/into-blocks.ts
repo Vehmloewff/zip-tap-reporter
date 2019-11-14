@@ -1,7 +1,11 @@
-import { mustStartWithComment } from './errors';
-
 export type Caller = (title: string) => CallerResult;
-export type CallerResult = { newChunk: (data: string) => void; done?: () => void };
+export type CallerResult = {
+	newChunk: (data: string) => void;
+	done?: () => void;
+	logs?: (logs: string[]) => void;
+};
+
+const isTAPData = (data: string) => /^(not )?ok/.test(data);
 
 export default function intoBlocks(
 	caller: Caller,
@@ -18,14 +22,23 @@ export default function intoBlocks(
 	let onSummary = false;
 	let summary: string[] = [];
 
+	let logs: string[] = [];
+
+	const setLogs = () => {
+		if (currentCaller.logs) currentCaller.logs(logs);
+		else console.log(logs.join('\n'));
+		logs = [];
+	};
+
 	const parse = (data: string) => {
 		const arrData = data.split('\n').filter(removeEmpty);
 
 		arrData.filter(removeEmpty).forEach(data => {
 			if (testSummaryStart.test(data)) {
-				currentCaller.done();
+				if (currentCaller.done) currentCaller.done();
 				onSummary = true;
 				summary.push(data);
+				setLogs();
 			} else if (onSummary && testEnd.test(data)) {
 				summary.push(data);
 				if (done) done(summary.filter(d => d !== ''));
@@ -34,9 +47,11 @@ export default function intoBlocks(
 			} else if (blockStart.test(data)) {
 				if (currentCaller && currentCaller.done) currentCaller.done();
 				currentCaller = caller(data.replace(blockStartHash, ''));
+				setLogs();
 			} else {
 				if (data.match(/TAP version 13/)) return;
-				if (!currentCaller) throw mustStartWithComment;
+				if (!isTAPData(data)) return logs.push(data);
+				if (!currentCaller) currentCaller = caller(`tests`);
 
 				currentCaller.newChunk(data);
 			}
