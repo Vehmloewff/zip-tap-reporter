@@ -14,7 +14,7 @@ tests(async () => {
 		await delay(200);
 
 		it(`should not throw and error when valid params are passed`, expect => {
-			expect(1).toBe(1);
+			expect(1).toBe(2);
 		});
 
 		it(`short message`, expect => {

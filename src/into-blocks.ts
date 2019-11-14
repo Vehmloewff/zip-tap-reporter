@@ -5,8 +5,6 @@ export type CallerResult = {
 	logs?: (logs: string[]) => void;
 };
 
-const isTAPData = (data: string) => /^(not )?ok/.test(data);
-
 export default function intoBlocks(
 	caller: Caller,
 	done?: (data: string[]) => void
@@ -28,6 +26,20 @@ export default function intoBlocks(
 		if (currentCaller.logs) currentCaller.logs(logs);
 		else console.log(logs.join('\n'));
 		logs = [];
+	};
+
+	let inYML = false;
+	const isTAPData = (data: string) => {
+		if (/^  ---$/.test(data)) {
+			inYML = true;
+			return true;
+		}
+		if (/^  \.\.\.$/.test(data)) {
+			inYML = false;
+			return true;
+		}
+		if (inYML) return true;
+		else return /^(not )?ok/.test(data);
 	};
 
 	const parse = (data: string) => {

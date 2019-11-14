@@ -46,7 +46,7 @@ function writeBlocks(blocks: Blocks[]) {
 				}
 				if (test.actual || test.expected) toLog += `\n\n`;
 				if (test.at) toLog += `      ${chalk.grey(`at ${test.at}`)}\n`;
-				toLog += `\n    ${chalk.grey`----------------------------------------------------------------`}`;
+				toLog += `\n    ${chalk.grey`--------------------------------------------------------------`}`;
 				toLog += `\n\n`;
 			}
 		});
@@ -57,10 +57,16 @@ function writeBlocks(blocks: Blocks[]) {
 		if (block.logs.length) {
 			console.log(
 				chalk.grey(
-					`------------------------------${chalk.inverse` LOGS `}------------------------------`
+					`---------------------------${chalk.inverse` GROUP LOGS `}---------------------------`
 				)
 			);
-			console.log(block.logs.join('\n'), `\n\n`);
+			console.log(block.logs.join('\n'));
+			console.log(
+				chalk.grey(
+					`----------------------------${chalk.inverse` END LOGS `}----------------------------`,
+					`\n\n`
+				)
+			);
 		}
 	});
 }
