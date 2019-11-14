@@ -5,7 +5,7 @@ import { clearLine, cursorTo } from 'readline';
 import chalk from 'chalk';
 import { check, times } from './emoji';
 
-type Blocks = { tests: TestData[]; title: string };
+type Blocks = { tests: TestData[]; title: string; logs: string[] };
 
 function removeRunningMessage() {
 	clearLine(process.stdout, 0);
@@ -46,7 +46,7 @@ function writeBlocks(blocks: Blocks[]) {
 				}
 				if (test.actual || test.expected) toLog += `\n\n`;
 				if (test.at) toLog += `      ${chalk.grey(`at ${test.at}`)}\n`;
-				toLog += `\n    ${chalk.grey`-----------------------------------------------------------------`}`;
+				toLog += `\n    ${chalk.grey`----------------------------------------------------------------`}`;
 				toLog += `\n\n`;
 			}
 		});
@@ -54,6 +54,14 @@ function writeBlocks(blocks: Blocks[]) {
 		if (passed) console.log(chalk.bgGreen.black` PASS `, block.title);
 		else console.log(chalk.bgRed.white` FAIL `, block.title);
 		console.log(toLog);
+		if (block.logs.length) {
+			console.log(
+				chalk.grey(
+					`------------------------------${chalk.inverse` LOGS `}------------------------------`
+				)
+			);
+			console.log(block.logs.join('\n'), `\n\n`);
+		}
 	});
 }
 
@@ -101,6 +109,7 @@ export default () => {
 
 	function block(title: string) {
 		let block = ``;
+		let groupedLogs: string[] = [];
 
 		return {
 			newChunk: (data: string) => {
@@ -109,8 +118,17 @@ export default () => {
 			done: () => {
 				const rawTests = intoTests(block);
 
-				blocks.push({ tests: rawTests.map(test => parseTest(test)), title });
+				blocks.push({
+					tests: rawTests.map(test => parseTest(test)),
+					title,
+					logs: groupedLogs,
+				});
+
+				// console.log(groupedLogs);
+
+				groupedLogs = [];
 			},
+			logs: (logs: string[]) => groupedLogs.push(...logs),
 		};
 	}
 

@@ -49,7 +49,7 @@ export default function intoBlocks(
 				currentCaller = caller(data.replace(blockStartHash, ''));
 				setLogs();
 			} else {
-				if (data.match(/TAP version 13/)) return;
+				if (data.match(/^TAP version 13$/)) return;
 				if (!isTAPData(data)) return logs.push(data);
 				if (!currentCaller) currentCaller = caller(`tests`);
 

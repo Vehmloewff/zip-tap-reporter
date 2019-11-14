@@ -1,11 +1,15 @@
 const { tests, describe } = require('zip-tap');
 const delay = require('delay');
 
+console.log(`hi`);
+
 tests(async () => {
 	await describe(`createData`, async it => {
 		it(`should be a valid type`, expect => {
 			expect(1).toBe(1);
 		});
+
+		console.log('hello');
 
 		await delay(200);
 
@@ -17,6 +21,8 @@ tests(async () => {
 			expect(1).toBe(1);
 		});
 	});
+
+	console.log('then');
 
 	await delay(300);
 
