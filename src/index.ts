@@ -115,26 +115,20 @@ export default () => {
 
 	function block(title: string) {
 		let block = ``;
-		let groupedLogs: string[] = [];
 
 		return {
 			newChunk: (data: string) => {
 				block += `${data}\n`;
 			},
-			done: () => {
+			done: (logs: string[]) => {
 				const rawTests = intoTests(block);
 
 				blocks.push({
 					tests: rawTests.map(test => parseTest(test)),
 					title,
-					logs: groupedLogs,
+					logs,
 				});
-
-				// console.log(groupedLogs);
-
-				groupedLogs = [];
 			},
-			logs: (logs: string[]) => groupedLogs.push(...logs),
 		};
 	}
 

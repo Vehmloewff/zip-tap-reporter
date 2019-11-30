@@ -38,7 +38,6 @@ describe(`intoBlocks`, it => {
 					called++;
 					expect(data).toMatch(/ok other2|ok other/);
 				},
-				done: () => {},
 			};
 		};
 		const parse = intoBlocks(block);
@@ -62,7 +61,6 @@ describe(`intoBlocks`, it => {
 					called++;
 					expect(data).toMatch(/^ok other2|ok other$/);
 				},
-				done: () => {},
 			};
 		};
 		const parse = intoBlocks(block);
@@ -82,8 +80,7 @@ describe(`intoBlocks`, it => {
 
 			return {
 				newChunk: () => {},
-				logs: (logs: string[]) => gatheredLogs.push(...logs),
-				done: () => gatheredLogs.push(`break`),
+				done: (logs: string[]) => gatheredLogs.push(...logs, `break`),
 			};
 		};
 		const parse = intoBlocks(block);
@@ -94,8 +91,10 @@ describe(`intoBlocks`, it => {
 		parse(`there`);
 		parse(`# something\nother\nok other2`);
 		parse(`1...3`);
+		parse(`success: 2`);
+		parse(`failure: 0`);
 
-		expect(gatheredLogs).toMatchObject([`here`, `break`, `other`, `there`, `break`, `other`]);
+		expect(gatheredLogs).toMatchObject([`here`, `other`, `there`, `break`, `other`, `break`]);
 	});
 
 	it(`should always call 'done' when a block is finished`, expect => {
@@ -104,7 +103,6 @@ describe(`intoBlocks`, it => {
 
 		const block = (title: string) => ({
 			newChunk: () => {},
-			logs: () => {},
 			done: () => {
 				expect(titles[counter]).toBe(title);
 				counter++;

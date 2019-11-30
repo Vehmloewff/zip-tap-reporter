@@ -1,8 +1,7 @@
 export type Caller = (title: string) => CallerResult;
 export type CallerResult = {
 	newChunk: (data: string) => void;
-	done?: () => void;
-	logs?: (logs: string[]) => void;
+	done?: (logs: string[]) => void;
 };
 
 export default function intoBlocks(
@@ -22,10 +21,11 @@ export default function intoBlocks(
 
 	let logs: string[] = [];
 
-	const setLogs = () => {
-		if (currentCaller.logs) currentCaller.logs(logs);
-		else console.log(logs.join('\n'));
-		logs = [];
+	const callDone = () => {
+		if (currentCaller && currentCaller.done) {
+			currentCaller.done(logs);
+			logs = [];
+		}
 	};
 
 	let inYML = false;
@@ -47,19 +47,17 @@ export default function intoBlocks(
 
 		arrData.filter(removeEmpty).forEach(data => {
 			if (testSummaryStart.test(data)) {
-				if (currentCaller.done) currentCaller.done();
+				callDone();
 				onSummary = true;
 				summary.push(data);
-				setLogs();
 			} else if (onSummary && testEnd.test(data)) {
 				summary.push(data);
 				if (done) done(summary.filter(d => d !== ''));
 			} else if (onSummary) {
 				summary.push(data);
 			} else if (blockStart.test(data)) {
-				if (currentCaller && currentCaller.done) currentCaller.done();
+				callDone();
 				currentCaller = caller(data.replace(blockStartHash, ''));
-				setLogs();
 			} else {
 				if (data.match(/^TAP version 13$/)) return;
 				if (!isTAPData(data)) return logs.push(data);
