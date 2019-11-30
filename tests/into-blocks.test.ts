@@ -97,4 +97,30 @@ describe(`intoBlocks`, it => {
 
 		expect(gatheredLogs).toMatchObject([`here`, `break`, `other`, `there`, `break`, `other`]);
 	});
+
+	it(`should always call 'done' when a block is finished`, expect => {
+		let counter = 0;
+		let titles = [`this`, `that`, `then`];
+
+		const block = (title: string) => ({
+			newChunk: () => {},
+			logs: () => {},
+			done: () => {
+				expect(titles[counter]).toBe(title);
+				counter++;
+			},
+		});
+		const parse = intoBlocks(block);
+
+		parse(`here`);
+		parse(`# this\nother`);
+		parse(`not ok other2`);
+		parse(`there`);
+		parse(`# that\nother\nok other2`);
+		parse(`# then`);
+		parse(`ok here`);
+		parse(`1...3`);
+
+		expect(counter).toBe(3);
+	});
 });
