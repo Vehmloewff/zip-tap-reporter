@@ -121,4 +121,43 @@ describe(`intoBlocks`, it => {
 
 		expect(counter).toBe(3);
 	});
+
+	it(`should work with a live example`, expect => {
+		let counter = 0;
+		let expectedLogs = [[], [], [`hi`]];
+
+		const block = () => ({
+			newChunk: () => {},
+			done: (logs: string[]) => {
+				expect(logs).toMatchObject(expectedLogs[counter]);
+				counter++;
+			},
+		});
+		const parse = intoBlocks(block);
+
+		parse(`TAP version 13`);
+		parse(`# stores`);
+		parse(`ok 1 - should update and call the subscribers`);
+		parse(`ok 2 - should unsubscribe themselves when prompted to do so`);
+		parse(`ok 3 - readable stores should update themselves accoring to the second param`);
+		parse(`ok 4 - dependant stores should update when the dependents do`);
+		parse(`# something`);
+		parse(`ok 5 - should pass`);
+		parse(`# createEventDispatcher`);
+		parse(`ok 6 - should call the listeners when new events are recieved`);
+		parse(`hi`);
+		parse(`not ok 7 - should only call the 'once' events once`);
+		parse(`  ---`);
+		parse(`  message: The expected value did not match the actual`);
+		parse(`  operator: toBe`);
+		parse(`  at: toBe(/home/vehmloewff/Code/versatilejs/dist/build.js:3854:48)`);
+		parse(`  expected: 2`);
+		parse(`  actual: 3`);
+		parse(`  ...`);
+		parse(`1...7`);
+		parse(``);
+		parse(`# not ok`);
+		parse(`# success: 6`);
+		parse(`# failure: 1`);
+	});
 });
