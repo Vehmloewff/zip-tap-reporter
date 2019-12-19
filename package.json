@@ -1,6 +1,6 @@
 {
 	"name": "zip-tap-reporter",
-	"version": "1.0.5",
+	"version": "2.0.0",
 	"description": "A small and colorful reporter for zip-tap",
 	"main": "dist/build.cjs.js",
 	"module": "dist/build.esm.js",
