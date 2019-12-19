@@ -3,15 +3,24 @@
 const createReporter = require('../dist/build.cjs');
 const { exec } = require('child_process');
 
-const reporter = createReporter();
-
 const args = process.argv;
 
 args.shift();
 args.shift();
 
-if (!args.length) process.stdin.on('data', reporter.log);
-else {
+if (!args.length) {
+	console.log(`\nPiping TAP output directly into zip-tap-reporter is depreciated.  Prefix your test command with 'zip-tap-reporter' instead.
+
+	'node tests.js | zip-tap-reporter' --> 'zip-tap-reporter node tests.js'
+
+See https://github.com/Vehmloewff/zip-tap-reporter#cli for more information.`);
+}
+
+const reporter = createReporter();
+
+if (!args.length) {
+	process.stdin.on('data', reporter.log);
+} else {
 	const command = exec(args.join(' '));
 
 	command.stdout.on('data', data => {
