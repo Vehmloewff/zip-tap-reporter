@@ -152,29 +152,13 @@ export default function createReporter() {
 		});
 	}
 
-	function bail(error?: Error | string) {
-		let message: string = undefined;
-
-		if (error) {
-			if (error instanceof Error) {
-				const messageArr = error.message.split('\n');
-				messageArr.shift();
-				message = messageArr.join('\n');
-			} else if (typeof error === 'string') {
-				message = error;
-			} else {
-				throw new Error(
-					`Expected 'error' to be an error to be an Error instance or a string.`
-				);
-			}
-		}
-
+	function bail(err: string) {
 		parse(`Bail out!`);
 
 		removeRunningMessage();
 		writeBlocks(blocks);
 
-		console.error(message);
+		if (err) console.error(err);
 	}
 
 	return {
