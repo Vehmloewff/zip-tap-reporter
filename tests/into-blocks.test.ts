@@ -160,4 +160,30 @@ describe(`intoBlocks`, it => {
 		parse(`# success: 6`);
 		parse(`# failure: 1`);
 	});
+
+	it(`should bail out when asked to`, expect => {
+		const gatheredLogs: string[] = [];
+
+		const block = (title: string) => {
+			expect(title).toBe(`something`);
+
+			return {
+				newChunk: () => {},
+				done: (logs: string[]) => gatheredLogs.push(...logs, `break`),
+			};
+		};
+		const parse = intoBlocks(block);
+
+		parse(`here`);
+		parse(`# something\nother`);
+		parse(`not ok other2`);
+		parse(`there`);
+		parse(`Bail out!`);
+		parse(`other\nok other2`);
+		parse(`at mewrtew`);
+		parse(`at 8234751h`);
+		parse(`Error!`);
+
+		expect(gatheredLogs).toMatchObject([`here`, `other`, `there`, `break`]);
+	});
 });
