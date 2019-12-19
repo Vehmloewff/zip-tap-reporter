@@ -3,6 +3,7 @@ import intoTests from './into-tests';
 import parseTest, { Response as TestData } from './parse-test';
 import { clearLine, cursorTo } from 'readline';
 import chalk from 'chalk';
+import { exec } from 'child_process';
 import { check, times } from './emoji';
 
 type Blocks = { tests: TestData[]; title: string; logs: string[] };
@@ -110,7 +111,7 @@ function startTest() {
 	process.stdout.write(chalk.blue.bold`\n\nRunning tests...`);
 }
 
-export default () => {
+export default function createReporter() {
 	startTest();
 
 	const blocks: Blocks[] = [];
@@ -140,9 +141,44 @@ export default () => {
 		summarize(summary);
 	});
 
-	return (chunk: Buffer) => {
+	function log(chunk: Buffer) {
 		const str = chunk.toString();
 
-		if (str.trim() !== `TAP version 13`) parse(str);
+		const lines = str.split(/\n/);
+
+		lines.forEach(line => {
+			if (/Bail out\!/.test(line.trim())) bail(line);
+			else if (str.trim() !== `TAP version 13`) parse(line);
+		});
+	}
+
+	function bail(error?: Error | string) {
+		let message: string = undefined;
+
+		if (error) {
+			if (error instanceof Error) {
+				const messageArr = error.message.split('\n');
+				messageArr.shift();
+				message = messageArr.join('\n');
+			} else if (typeof error === 'string') {
+				message = error;
+			} else {
+				throw new Error(
+					`Expected 'error' to be an error to be an Error instance or a string.`
+				);
+			}
+		}
+
+		parse(`Bail out!`);
+
+		removeRunningMessage();
+		writeBlocks(blocks);
+
+		console.error(message);
+	}
+
+	return {
+		log,
+		bail,
 	};
-};
+}

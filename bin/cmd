@@ -1,7 +1,26 @@
 #!/usr/bin/env node
 
 const createReporter = require('../dist/build.cjs');
+const { exec } = require('child_process');
 
 const reporter = createReporter();
 
-process.stdin.on('data', reporter);
+const args = process.argv;
+
+args.shift();
+args.shift();
+
+if (!args.length) process.stdin.on('data', reporter.log);
+else {
+	exec(args.join(' '), async (err, std, ste) => {
+		reporter.log(std || ste);
+
+		if (err) {
+			await reporter.bail(err);
+			process.exit(1);
+		}
+	}).once('exit', async code => {
+		if (code) await reporter.bail();
+		process.exit(code);
+	});
+}

@@ -39,6 +39,7 @@ tests(async () => {
 	});
 
 	describe(`failures`, async it => {
+		throw new Error(`me`);
 		it(`should pass because this is the first test in this block`, expect => {
 			expect(1).toBe(1);
 		});
