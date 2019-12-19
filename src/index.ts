@@ -102,6 +102,8 @@ function summarize(summary: string[]) {
 	}
 
 	console.log();
+
+	if (didFail && process && process.exit) process.exit(1);
 }
 
 function startTest() {
