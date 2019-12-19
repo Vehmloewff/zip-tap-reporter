@@ -14,7 +14,7 @@ tests(async () => {
 		await delay(200);
 
 		it(`should not throw and error when valid params are passed`, expect => {
-			expect(1).toBe(2);
+			expect(1).toBe(1);
 		});
 
 		it(`short message`, expect => {
@@ -39,7 +39,6 @@ tests(async () => {
 	});
 
 	describe(`failures`, async it => {
-		throw new Error(`me`);
 		it(`should pass because this is the first test in this block`, expect => {
 			expect(1).toBe(1);
 		});
