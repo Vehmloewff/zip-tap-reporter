@@ -13,10 +13,12 @@ export default function intoBlocks(
 	const blockStartHash = /^#\s+/;
 	const testSummaryStart = /^\d+\.\.\.\d+$/;
 	const testEnd = /^# failure: \d+/;
+	const bailOut = /^Bail out\!$/;
 
 	const removeEmpty = (d: string) => d !== '';
 
 	let onSummary = false;
+	let bailed = false;
 	let summary: string[] = [];
 
 	let logs: string[] = [];
@@ -24,6 +26,12 @@ export default function intoBlocks(
 	const callDone = () => {
 		if (currentCaller && currentCaller.done) {
 			currentCaller.done(logs);
+			logs = [];
+		} else if (bailed) {
+			console.log();
+			console.log();
+			console.log(logs.join('\n'));
+			console.log();
 			logs = [];
 		}
 	};
@@ -43,10 +51,14 @@ export default function intoBlocks(
 	};
 
 	const parse = (data: string) => {
+		if (bailed) return;
 		const arrData = data.split('\n').filter(removeEmpty);
 
 		arrData.filter(removeEmpty).forEach(data => {
-			if (testSummaryStart.test(data)) {
+			if (bailOut.test(data)) {
+				bailed = true;
+				callDone();
+			} else if (testSummaryStart.test(data)) {
 				callDone();
 				onSummary = true;
 				summary.push(data);
