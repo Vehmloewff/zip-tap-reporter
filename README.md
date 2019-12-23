@@ -3,7 +3,7 @@
 A small and colorful reporter for [zip-tap](https://github.com/Vehmloewff/zip-tap)
 
 <p align="center">
-    <img src="https://github.com/Vehmloewff/zip-tap-reporter/raw/master/screenshot.png">
+    <img src="screenshot.png">
 </p>
 
 ## Usage
