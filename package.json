@@ -33,6 +33,7 @@
 	],
 	"license": "MIT",
 	"devDependencies": {
+		"@types/js-yaml": "^3.12.2",
 		"acorn": "^7.1.0",
 		"cross-env": "^7.0.0",
 		"delay": "^4.3.0",
@@ -52,11 +53,7 @@
 		"url": "https://github.com/Vehmloewff/zip-tap-reporter"
 	},
 	"dependencies": {
-		"@types/js-yaml": "^3.12.2",
-		"@types/through2": "^2.0.34",
 		"chalk": "^3.0.0",
-		"debug": "^4.1.1",
-		"js-yaml": "^3.13.1",
-		"through2": "^3.0.1"
+		"js-yaml": "^3.13.1"
 	}
 }
