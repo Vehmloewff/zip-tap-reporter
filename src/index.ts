@@ -21,6 +21,15 @@ function showJSONIfGiven(toTest: string | object): string {
 	return String(toTest);
 }
 
+function tabIfMultiline(data: any) {
+	if (typeof data !== 'string') return data;
+
+	return data
+		.trim()
+		.split('\n')
+		.join('\n        ');
+}
+
 function writeBlocks(blocks: Blocks[]) {
 	blocks.forEach(block => {
 		let toLog = ``;
@@ -35,9 +44,9 @@ function writeBlocks(blocks: Blocks[]) {
 				toLog += `      ${chalk.red(test.message)}\n\n`;
 				if (test.expected && test.actual) {
 					toLog += `      ${chalk.grey(`Expected value:`)}\n`;
-					toLog += `        ${showJSONIfGiven(test.expected)}\n`;
+					toLog += `        ${showJSONIfGiven(tabIfMultiline(test.expected))}\n`;
 					toLog += `      ${chalk.grey(`Actual value:`)}\n`;
-					toLog += `        ${showJSONIfGiven(test.actual)}`;
+					toLog += `        ${showJSONIfGiven(tabIfMultiline(test.actual))}`;
 				} else if (test.expected) {
 					toLog += `      ${chalk.grey(`Value expected:`)}\n`;
 					toLog += `        ${test.expected}\n`;

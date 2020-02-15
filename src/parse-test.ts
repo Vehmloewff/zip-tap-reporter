@@ -1,3 +1,5 @@
+import jsYaml from 'js-yaml';
+
 type Extra = {
 	actual?: string | object;
 	expected?: string | object;
@@ -30,20 +32,10 @@ export default (data: string): Response => {
 };
 
 function parseExtra(extraData: string): Extra {
-	const extra: Extra = {};
-	const extras = extraData.replace(/  \-\-\-\n|\n  \.\.\.|  /g, '').split('\n');
+	const extra = jsYaml.safeLoad(extraData.replace(/  \-\-\-\n|\n  \.\.\.|/g, ''));
 
-	const actual = /actual:/;
-	const expected = /expected:/;
-	const at = /at:/;
-	const message = /message:/;
-
-	extras.forEach(ex => {
-		if (actual.test(ex)) extra.actual = ex.replace(actual, '').trim();
-		else if (expected.test(ex)) ex = extra.expected = ex.replace(expected, '').trim();
-		else if (at.test(ex)) ex = extra.at = ex.replace(at, '').trim();
-		else if (message.test(ex)) ex = extra.message = ex.replace(message, '').trim();
-	});
+	if (Array.isArray(extra.actual)) extra.actual = extra.actual.join('\n');
+	if (Array.isArray(extra.expected)) extra.expected = extra.expected.join('\n');
 
 	if (extra.actual) extra.actual = stringMightBeObject(extra.actual);
 	if (extra.expected) extra.expected = stringMightBeObject(extra.expected);

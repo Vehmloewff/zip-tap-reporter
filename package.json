@@ -34,17 +34,17 @@
 	"license": "MIT",
 	"devDependencies": {
 		"acorn": "^7.1.0",
-		"cross-env": "^6.0.3",
+		"cross-env": "^7.0.0",
 		"delay": "^4.3.0",
 		"prettier": "^1.19.1",
-		"rollup": "^1.27.13",
-		"rollup-plugin-command": "^1.0.7",
+		"rollup": "^1.31.1",
+		"rollup-plugin-command": "^1.1.2",
 		"rollup-plugin-commonjs": "^10.1.0",
 		"rollup-plugin-node-resolve": "^5.2.0",
 		"rollup-plugin-typescript": "^1.0.1",
 		"tslib": "^1.10.0",
-		"typescript": "^3.7.3",
-		"zip-tap": "^1.0.5"
+		"typescript": "^3.7.5",
+		"zip-tap": "^1.0.6"
 	},
 	"homepage": "https://github.com/Vehmloewff/zip-tap-reporter",
 	"repository": {
@@ -52,9 +52,11 @@
 		"url": "https://github.com/Vehmloewff/zip-tap-reporter"
 	},
 	"dependencies": {
+		"@types/js-yaml": "^3.12.2",
 		"@types/through2": "^2.0.34",
 		"chalk": "^3.0.0",
 		"debug": "^4.1.1",
+		"js-yaml": "^3.13.1",
 		"through2": "^3.0.1"
 	}
 }

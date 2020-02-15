@@ -74,6 +74,10 @@ tests(async () => {
 			expect(1).toBe(1);
 		});
 
+		it(`should show multipule lines here`, expect => {
+			expect(`thisthing\nother\nthing`).toBe(1);
+		});
+
 		it(`short message`, expect => {
 			expect(1).toBe(1);
 		});
